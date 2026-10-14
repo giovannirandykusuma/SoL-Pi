@@ -72,7 +72,10 @@ export async function assertUnchangedBeforeCommand(
  * Pi >=0.99 returns non-zero bash exits as `{ isError: true }` instead of throwing.
  * Treat those the same as thrown failures so Action Fusion does not report success.
  */
-export function thenRunCommandFailed(result: AgentToolResult<unknown>): boolean {
+// The fields are declared here because the pinned 0.85.1 dev types predate them (Pi >=0.99 adds both).
+export function thenRunCommandFailed(
+	result: Pick<AgentToolResult<unknown>, "content"> & { isError?: boolean; structuredContent?: unknown },
+): boolean {
 	if (result.isError === true) {
 		return true;
 	}
